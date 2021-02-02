@@ -39,6 +39,11 @@ module Api
           render json: {status: 'SUCCESS', message: 'User successfully deleted', data:@user}, status: :ok
         end
 
+        def typehead
+          @users = User.where('firstName LIKE :query OR lastName LIKE :query or email LIKE :query', query: "%#{params[:query]}%")
+          render json: { status: 'SUCCESS', data: @users }, status: :ok
+        end
+
         private
           def user_params
             params.permit(:firstName, :lastName, :email)
